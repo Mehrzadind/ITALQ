@@ -14,11 +14,11 @@ class JobProblem:
     def __init__(self,
                  filepath,
                  stopwords=STOP_WORDS,
-                 vocab_size=50,
-                 min_count=2,
+                 vocab_size=300,
+                 min_count=4,
                  max_len=20,
                  epochs=70,
-                 window_size=10,
+                 window_size=15,
                  num_workers=4
                  ):
         self.data = self.load_data(filepath)
@@ -70,7 +70,7 @@ class JobProblem:
         processed = gensim.utils.simple_preprocess(text, max_len=max_len)  # O(len(text))
         return [token for token in processed if token not in stopwords]  # O(tokens + 1) >> O(n)
 
-    def make_dict(self, column_name='req'):
+    def make_dict(self, column_name='desc'):
         if (self.train_data is not None) and (self.test_data is not None):
             self.train_dict = {}
             self.test_dict = {}
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     solver.train()
     solver.evaluate()
     solver.calculate_similarities()
-    solver.report_results(verbose=False)
+    solver.report_results(verbose=True)
     job = 'Product Manager'
     solver.get_taggs(job)
 
